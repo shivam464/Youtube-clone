@@ -1,13 +1,10 @@
-import React from "react";
-import { GoHomeFill, GoHistory } from "react-icons/Go";
-
 const svgStyles = {
   pointerEvents: "none",
   display: "block",
   width: "100%",
   height: "100%",
 };
-const leftsidedata = {
+export const leftsidedata = {
   maincate: [
     {
       icon: (
@@ -17,8 +14,11 @@ const leftsidedata = {
           viewBox="0 0 24 24"
           width="24"
           focusable="false"
+          style={svgStyles}
         >
-          <path d="m12 4.44 7 6.09V20h-4v-6H9v6H5v-9.47l7-6.09m0-1.32-8 6.96V21h6v-6h4v6h6V10.08l-8-6.96z"></path>
+          <g>
+            <path d="M4 21V10.08l8-6.96 8 6.96V21h-6v-6h-4v6H4z"></path>
+          </g>
         </svg>
       ),
       label: "Home",
@@ -114,7 +114,7 @@ const leftsidedata = {
     },
   ],
 
-  explore: [
+  Explore: [
     {
       icon: (
         <svg
@@ -271,9 +271,7 @@ const leftsidedata = {
         <svg
           className="external-icon"
           viewBox="0 0 97 20"
-          style={svgStyles}
-          height="24"
-          width="24"
+          style="width: 100%; pointer-events: none; display: block; height: 100%;"
           focusable="false"
         >
           <svg
@@ -308,13 +306,7 @@ const leftsidedata = {
     },
     {
       icon: (
-        <svg
-          viewBox="0 0 24 24"
-          focusable="false"
-          width="24"
-          height="24"
-          style={svgStyles}
-        >
+        <svg viewBox="0 0 24 24" focusable="false" style={svgStyles}>
           <circle fill="#FF0000" cx="12" cy="12" r="10"></circle>
           <polygon fill="#FFFFFF" points="10,14.65 10,9.35 15,12 "></polygon>
           <path
@@ -327,13 +319,7 @@ const leftsidedata = {
     },
     {
       icon: (
-        <svg
-          viewBox="0 0 24 24"
-          focusable="false"
-          height="24"
-          width="24"
-          style={svgStyles}
-        >
+        <svg viewBox="0 0 24 24" focusable="false" style={svgStyles}>
           <path
             fill="#FF0000"
             d="M21.39,13.19c0-0.08,0-0.15,0-0.22c-0.01-0.86-0.5-5-0.78-5.74c-0.32-0.85-0.76-1.5-1.31-1.91 c-0.9-0.67-1.66-0.82-2.6-0.84l-0.02,0c-0.4,0-3.01,0.32-5.2,0.62C9.28,5.4,6.53,5.8,5.88,6.04c-0.9,0.33-1.62,0.77-2.19,1.33 c-1.05,1.04-1.18,2.11-1.04,3.51c0.1,1.09,0.69,5.37,1.02,6.35c0.45,1.32,1.33,2.12,2.47,2.24c0.28,0.03,0.55,0.05,0.82,0.05 c1,0,1.8-0.21,2.72-0.46c1.45-0.39,3.25-0.87,6.97-0.87l0.09,0h0.02c0.91,0,3.14-0.2,4.16-2.07C21.44,15.12,21.41,13.91,21.39,13.19 z"
@@ -419,70 +405,3 @@ const leftsidedata = {
     },
   ],
 };
-
-const LeftSidebar = () => {
-  return (
-    <div className="w-[100%] py-2">
-      {leftsidedata.maincate.map((cat, index) => (
-        <>
-          <div
-            key={index}
-            className="flex items-center justify-start cursor-pointer hover:bg-[#f1f1f1] rounded-lg p-[12px] text-[#0f0f0f]"
-          >
-            <span className="text-[24px] mr-[24px]">{cat.icon}</span>
-            <span className="text-[14px]">{cat.label}</span>
-          </div>
-          {index == 2 ? <hr /> : null}
-        </>
-      ))}
-      <hr />
-      <div className="px-[12px] py-[20px]">
-        <div className="expolore_heading px-2 ">
-          <h3>Explore</h3>
-        </div>
-        {leftsidedata.explore.map((expl, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-start cursor-pointer hover:bg-[#f1f1f1] rounded-lg px-2 py-[12px] text-[#0f0f0f]"
-          >
-            <span className="text-[24px] mr-[24px]">{expl.icon}</span>
-            <span className="text-[14px]">{expl.label}</span>
-          </div>
-        ))}
-      </div>
-      <hr />
-      <div className="px-[12px] py-[20px]">
-        <div className="expolore_heading px-2 ">
-          <h3>More from YouTube</h3>
-        </div>
-        {leftsidedata.more_from_youtube.map((expl, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-start cursor-pointer hover:bg-[#f1f1f1] rounded-lg px-2 py-[12px] text-[#0f0f0f]"
-          >
-            <span className="text-[24px] mr-[24px] youtube_premium">
-              {expl.icon}
-            </span>
-            <span className="text-[14px]">{expl.label}</span>
-          </div>
-        ))}
-      </div>
-      <hr />
-      <div className="px-[12px] py-[20px]">
-        {leftsidedata.others.map((expl, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-start cursor-pointer hover:bg-[#f1f1f1] rounded-lg px-2 py-[12px] text-[#0f0f0f]"
-          >
-            <span className="text-[24px] mr-[24px] youtube_premium">
-              {expl.icon}
-            </span>
-            <span className="text-[14px]">{expl.label}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default LeftSidebar;
