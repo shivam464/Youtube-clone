@@ -1,13 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
-
+import RightSide from "../components/RightSide";
+import VideoDetailPage from "../pages/VideoDetailPage";
 const router = createBrowserRouter([
   {
-    path: "/about",
-    element: <div>about</div>,
+    path: "/:id",
+    element: <VideoDetailPage />,
   },
   {
     path: "/",
-    element: <div>home</div>,
+    element: <RightSide />,
   },
 ]);
 
