@@ -1,10 +1,15 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import VideoPlayer from "../components/VideoPlayer";
 import { apiConnector } from "../services/apiConnector";
+import { calculateVideoUploadDate } from "../../utils/Constant/CalculatePublishDate";
 import axios from "axios";
+import { getvideodata } from "../../utils/Constant/VideoData";
 const VideoDetailPage = () => {
   const { id } = useParams();
+
+  const [videodata, setvideodata] = useState([]);
+  const [VideoDetails, setVideoDetails] = useState("");
   // const getVideoDetails = async () => {
   //   const res = await apiConnector(
   //     "GET",
@@ -26,12 +31,18 @@ const VideoDetailPage = () => {
   const apiKey = "AIzaSyDElmCWonR6xKu01WNopa-YC2n8AGhQr1E";
   useEffect(() => {
     const videoURL = `https://www.googleapis.com/youtube/v3/videos?id=${id}&key=${apiKey}&part=snippet`;
+    // const videoURL = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${id}&key=${apiKey}`;
 
     axios
       .get(videoURL)
       .then((response) => {
-        const videoData = response.data.items[0].snippet;
-        console.log("videoData=...........", videoData);
+        const videoData = response.data.items[0];
+        setvideodata(response.data.items[0]);
+        let a = getvideodata(videoData.snippet?.channelId).then((data) => {
+          setVideoDetails(data);
+          console.log("data=...........", data);
+        });
+        console.log("videoData=...........", response.data.items[0]);
         // setVideoData(videoData);
       })
       .catch((error) => {
@@ -46,7 +57,11 @@ const VideoDetailPage = () => {
   //     console.log("error=...........", error);
   //   }
   // }, [id]);
-
+  const svgStyle = {
+    width: "72px",
+    height: "72px",
+    transform: "translate3d(0px, 0px, 0px)",
+  };
   return (
     <div className="w-full flex  px-[60px]">
       <div className="w-[70%] ">
@@ -59,6 +74,67 @@ const VideoDetailPage = () => {
             className: "max-h-514 max-w-914 rounded-full   overflow-hidden",
           }}
         />
+        <div className="py-2">
+          <p className="text-xl text-[#0f0f0f] font-[YouTube Sans,Roboto,sans-serif]">
+            {videodata.snippet?.title}
+          </p>
+        </div>
+        <div>
+          <div>
+            {/* for subscription */}
+            <div className="flex  ">
+              <Link
+                to={`https://www.youtube.com/${VideoDetails.snippet?.customUrl}`}
+                target={"_blank"}
+              >
+                <div className="flex justify-start items-center">
+                  <div className="rounded-full w-[40px]  overflow-hidden h-[40px]">
+                    <img
+                      className="w-full h-full"
+                      src={
+                        VideoDetails.snippet?.thumbnails?.default?.url ??
+                        VideoDetails.snippet?.thumbnails?.high?.url
+                      }
+                      alt=""
+                    />
+                  </div>
+                  <div className="ms-[10px]">
+                    <p className="text-[16px] tex-[black]">
+                      {videodata.snippet?.channelTitle}
+                    </p>
+                    <p className="text-[12px] text-[#797979]">
+                      1.4M subscribers
+                      {/* {calculateVideoUploadDate(videodata.snippet?.publishedAt)} */}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+              <div className="flex justify-center items-center ms-12">
+                <button className="bg-[white] border-solid border-[1px] me-3 border-[gray] text-[black] rounded-full px-5 py-[6px]">
+                  Join
+                </button>
+                <button className="bg-[black] text-[white] border-solid border-[1px] rounded-full px-4 py-[6px]">
+                  Subscribe
+                </button>
+              </div>
+            </div>
+          </div>
+          <div>
+            {/* for like and dislike */}
+            <div>
+              <div>
+                <img
+                  src="https://img.icons8.com/cotton/64/3iSDu4wTLpw2/facebook-like.png"
+                  alt="Facebook Like Icon"
+                />
+              </div>
+              <div>
+                <p>dislike</p>
+              </div>
+            </div>
+            <div>share</div>
+          </div>
+        </div>
       </div>
       <div className="w-[30%] ">
         {Array(18)

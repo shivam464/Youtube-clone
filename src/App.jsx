@@ -1,5 +1,5 @@
 // import { useEffect, useState } from "react";
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider, useRouteError } from "react-router-dom";
 import "./App.css";
 import React, { useRef } from "react";
 // import router from "../src/Routers";
@@ -11,6 +11,12 @@ import router from "./Routers";
 // import DataDisplay from './components/DataDisplay';
 function App() {
   const parentDivRef = useRef(null);
+  function ErrorBoundary() {
+    let error = useRouteError();
+    console.error(error);
+    // Uncaught ReferenceError: path is not defined
+    return <div>Dang!</div>;
+  }
   return (
     <div className="h-[95vh] app">
       <Header />
@@ -31,7 +37,7 @@ function App() {
           ref={parentDivRef}
           className="w-[100%] h-full overflow-y-scroll right_section  px-6 py-10"
         >
-          <RouterProvider router={router} />
+          <RouterProvider exact router={router} />
         </div>
       </div>
     </div>
