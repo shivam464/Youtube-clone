@@ -16,6 +16,15 @@ export function getvideodata(channelId) {
       throw new Error("Error fetching channel thumbnail: " + error);
     });
 }
-// export function getChannelData(channerId){
-
-// }
+export function SuggestionVideos(videoId) {
+  const apikey = "AIzaSyDElmCWonR6xKu01WNopa-YC2n8AGhQr1E";
+  const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&relatedToVideoId=${videoId}&key=${apikey}`;
+  try {
+    return axios.get(apiUrl).then((response) => {
+      const suggestionVideos = response.data.items;
+      return suggestionVideos;
+    });
+  } catch (error) {
+    throw new Error("Error fetching suggestion videos: " + error);
+  }
+}

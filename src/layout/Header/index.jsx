@@ -4,7 +4,12 @@ import { RxHamburgerMenu } from "react-icons/Rx";
 import { RiLiveLine } from "react-icons/Ri";
 import { CiBellOn, CiSearch } from "react-icons/Ci";
 import { MdKeyboardVoice, MdLiveTv, MdOutlineExplore } from "react-icons/Md";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const Header = () => {
+  // const navigate = useNavigate();
+  const [SearchInput, setSearchInput] = useState("");
   const Category_list = [
     {
       label: "All",
@@ -35,6 +40,13 @@ const Header = () => {
       Category: "Moon",
     },
   ];
+  const SearchButtonHandler = () => {
+    console.log("SearchInput", SearchInput);
+    // navigate({
+    //   pathname: "/results",
+    //   search: `?search_query=${SearchInput}`,
+    // });
+  };
   return (
     <div>
       <div className="custom-box-shadow">
@@ -52,11 +64,16 @@ const Header = () => {
           <div className="w-[40%] md:flex justify-between items-center hidden ">
             <div className="flex items-center  border-solid border-2 rounded-full overflow-hidden w-[95%]">
               <input
+                onChange={(e) => setSearchInput(e.target.value)}
+                value={SearchInput}
                 type="text"
                 className="bg-transparent ml-2 flex-1  placeholder-gray-400 focus:outline-none px-4 py-2 w-[90%] border-r border-gray-300"
                 placeholder="Search"
               />
-              <div className="cursor-pointer flex items-center justify-center bg-[#f8f8f8] text-center h-[42px] w-[12%]">
+              <div
+                className="cursor-pointer flex items-center justify-center bg-[#f8f8f8] text-center h-[42px] w-[12%]"
+                onClick={() => SearchButtonHandler()}
+              >
                 <CiSearch className="text-2xl inline-block" />
               </div>
             </div>

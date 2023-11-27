@@ -4,7 +4,11 @@ import { apiConnector } from "../services/apiConnector";
 import Loader from "./Loader";
 import VideoPlayer from "./VideoPlayer";
 import router from "../Routers";
-import { useNavigate } from "react-router-dom";
+import {
+  createSearchParams,
+  generatePath,
+  useNavigate,
+} from "react-router-dom";
 
 const RightSide = () => {
   const navigate = useNavigate();
@@ -226,7 +230,17 @@ const RightSide = () => {
   };
   const pushVideo = (id) => {
     // router.navigate("");
-    navigate(`/${id}`);
+    // navigate(`/${id}`);
+    // navigate({
+    //   pathname: "watch",
+    //   search: createSearchParams({
+    //     v: id,
+    //   }).toString(),
+    // });
+    navigate({
+      pathname: "/watch",
+      search: `?v=${id}`,
+    });
     // console.log("id", id);
   };
 
