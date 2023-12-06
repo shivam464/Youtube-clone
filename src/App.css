@@ -7,3 +7,17 @@
 .youtube_premium {
   aspect-ratio: 24/24;
 }
+.overflow-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.abc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal; /* Important for line-clamp to work */
+}

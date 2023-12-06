@@ -421,22 +421,22 @@ const leftsidedata = {
 
 const LeftSidebar = () => {
   return (
-    <div className="w-[100%] py-2">
+    <div className="w-[100%] py-2 ">
       {leftsidedata.maincate.map((cat, index) => (
         <>
           <div
             key={index}
-            className="flex items-center justify-start cursor-pointer hover:bg-[#f1f1f1] rounded-lg p-[12px] text-[#0f0f0f]"
+            className="flex items-center justify-start cursor-pointer hover:bg-[#f1f1f1] rounded-lg p-[12px] text-[#0f0f0f] w-fit lg:w-[100%]"
           >
-            <span className="text-[24px] mr-[24px]">{cat.icon}</span>
-            <span className="text-[14px]">{cat.label}</span>
+            <span className="text-[24px] lg:mr-[24px]">{cat.icon}</span>
+            <span className="text-[14px] hidden lg:block">{cat.label}</span>
           </div>
-          {index == 2 ? <hr /> : null}
+          {index == 2 ? <hr className="hidden lg:block" /> : null}
         </>
       ))}
       <hr />
       <div className="px-[12px] py-[20px]">
-        <div className="expolore_heading px-2 ">
+        <div className="expolore_heading px-2 hidden lg:block">
           <h3>Explore</h3>
         </div>
         {leftsidedata.explore.map((expl, index) => (
@@ -444,25 +444,25 @@ const LeftSidebar = () => {
             key={index}
             className="flex items-center justify-start cursor-pointer hover:bg-[#f1f1f1] rounded-lg px-2 py-[12px] text-[#0f0f0f]"
           >
-            <span className="text-[24px] mr-[24px]">{expl.icon}</span>
-            <span className="text-[14px]">{expl.label}</span>
+            <span className="text-[24px] lg:mr-[24px]">{expl.icon}</span>
+            <span className="text-[14px] hidden lg:block">{expl.label}</span>
           </div>
         ))}
       </div>
       <hr />
       <div className="px-[12px] py-[20px]">
         <div className="expolore_heading px-2 ">
-          <h3>More from YouTube</h3>
+          <h3 className="hidden lg:block">More from YouTube</h3>
         </div>
         {leftsidedata.more_from_youtube.map((expl, index) => (
           <div
             key={index}
             className="flex items-center justify-start cursor-pointer hover:bg-[#f1f1f1] rounded-lg px-2 py-[12px] text-[#0f0f0f]"
           >
-            <span className="text-[24px] mr-[24px] youtube_premium">
+            <span className="text-[24px] lg:mr-[24px] youtube_premium">
               {expl.icon}
             </span>
-            <span className="text-[14px]">{expl.label}</span>
+            <span className="text-[14px] hidden lg:block">{expl.label}</span>
           </div>
         ))}
       </div>
@@ -473,10 +473,10 @@ const LeftSidebar = () => {
             key={index}
             className="flex items-center justify-start cursor-pointer hover:bg-[#f1f1f1] rounded-lg px-2 py-[12px] text-[#0f0f0f]"
           >
-            <span className="text-[24px] mr-[24px] youtube_premium">
+            <span className="text-[24px] lg:mr-[24px] youtube_premium">
               {expl.icon}
             </span>
-            <span className="text-[14px]">{expl.label}</span>
+            <span className="text-[14px] hidden lg:block">{expl.label}</span>
           </div>
         ))}
       </div>

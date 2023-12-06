@@ -9,6 +9,7 @@ import {
   generatePath,
   useNavigate,
 } from "react-router-dom";
+import HomePageVideoCard from "./HomePageVideoCard";
 
 const RightSide = () => {
   const navigate = useNavigate();
@@ -256,44 +257,7 @@ const RightSide = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
         {ProductData &&
           ProductData.map((data, i) => (
-            <div className="" key={i} onClick={() => pushVideo(data.id)}>
-              <div className="rounded-[12px] overflow-hidden relative">
-                <img
-                  src={data.snippet.thumbnails?.maxres?.url}
-                  alt=""
-                  className="aspect-ratio-180/101 "
-                  onClick={() => getId(data.id)}
-                />
-                <span className="absolute text-[12px] bg-[black] px-[4px] py-[3px] bottom-[6px] rounded-[4px] right-[9px] text-[white]">
-                  19:22
-                </span>
-              </div>
-              <a href="/">
-                <div className="flex justify-start items-start py-3">
-                  <img
-                    src={data.snippet.thumbnails.default.url}
-                    alt=""
-                    className="w-[36px] h-[36px] mr-[12px]"
-                  />
-                  <div>
-                    <h5 className="text-[#0F0F0F] text-[13px] video_home_title ">
-                      {data.snippet.title}
-                    </h5>
-                    <p className="text-[#606060] text-[14px]">
-                      {data.snippet.channelTitle}
-                      <span className="text-[white] rounded-full bg-slate-400 w-3 h-3">
-                        <AiOutlineCheck />
-                      </span>
-                    </p>
-                    <div>
-                      <p>
-                        122k views <span>.</span> 3 weeks ago
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
+            <HomePageVideoCard data={data} key={i} />
           ))}
       </div>
       <div
