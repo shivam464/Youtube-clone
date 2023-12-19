@@ -42,3 +42,37 @@ export function calculateVideoUploadDate(publishedDate) {
     } ago`;
   }
 }
+export function formatViews(views) {
+  if (views >= 1e9) {
+    // If views are in billions
+    return Math.trunc((views / 1e9).toFixed(2)) + "B";
+  } else if (views >= 1e6) {
+    // If views are in millions
+    let millions = (views / 1e6).toFixed(2);
+    return Math.round(millions * 10) / 10 + "M";
+  } else if (views >= 1e3) {
+    let millions = (views / 1e3).toFixed(2);
+    return Math.round(millions * 10) / 10 + "K";
+
+    // If views are in thousands
+    return Math.trunc((views / 1e3).toFixed(2)) + "K";
+  } else {
+    // If views are less than 1,000
+    return views;
+  }
+}
+
+export const formatVideoTime = (seconds) => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+
+  const formattedHours = hours > 0 ? `${hours} ` : "00";
+  const formattedMinutes = minutes > 0 ? `${minutes}` : "00";
+  const formattedSeconds = remainingSeconds > 0 ? `${remainingSeconds}` : "";
+
+  return `${formattedHours} : ${formattedMinutes} : ${formattedSeconds}`;
+};
+
+// 1- 'e8d5b6025dmsh9905c32f2c6d6dbp160642jsne9f34f6c1bdc'
+// 2. '57c2dd9022mshef1259bff51e6f4p14ffb1jsn129a214b30ec'

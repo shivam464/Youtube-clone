@@ -11,27 +11,13 @@ import router from "./Routers";
 // import DataDisplay from './components/DataDisplay';
 function App() {
   const parentDivRef = useRef(null);
-  function ErrorBoundary() {
-    let error = useRouteError();
-    console.error(error);
-    // Uncaught ReferenceError: path is not defined
-    return <div>Dang!</div>;
-  }
 
-  // const checkInUrl = () => {
-  //   // console.log("window.location.href", window.location.href.indexOf("watch"));
-  //   let ispresent=window.location.href.indexOf("watch")
-  //   if(ispresent ==-1){
-  //     return false;
-  //   }
-  //   return true
-  // };
   return (
     <div className="h-[95vh] app">
       <Header />
       <div className="w-full flex  h-[calc(100vh-61.2px)]">
         {/* ------hide for now-------- */}
-        <div className="lg:w-[17%] h-full overflow-hidden hover:overflow-y-scroll px-[6px] hidden md:block">
+        <div className="lg:w-[17%] h-full overflow-y-scroll px-[6px] hidden md:block">
           <LeftSidebar />
         </div>
         {/* <div

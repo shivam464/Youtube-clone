@@ -4,125 +4,38 @@ import { apiConnector } from "../services/apiConnector";
 import Loader from "./Loader";
 import VideoPlayer from "./VideoPlayer";
 import router from "../Routers";
-import {
-  createSearchParams,
-  generatePath,
-  useNavigate,
-} from "react-router-dom";
+
 import HomePageVideoCard from "./HomePageVideoCard";
 
 const RightSide = () => {
-  const navigate = useNavigate();
   const [ProductData, setProductData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [nextPageToken, setNextPageToken] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(1);
-  const [url, seturl] = useState("");
+  const [nexttokens, setNexttokens] = useState(null);
 
-  const opts = {
-    height: "390",
-    width: "640",
-    playerVars: {
-      autoplay: 1,
-    },
-  };
+  // const [page, setPage] = useState(1);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const res = await apiConnector(
-  //         "GET",
-  //         "https://www.googleapis.com/youtube/v3/videos",
-  //         null,
-  //         null,
-  //         {
-  //           part: "snippet,contentDetails,statistics,status,statistics,topicDetails",
-  //           chart: "mostPopular",
-  //           maxResults: 30,
-  //           key: "AIzaSyDElmCWonR6xKu01WNopa-YC2n8AGhQr1E",
-  //         }
-  //       );
-  //       console.log("res", res.data.items);
-  //       setProductData(res.data.items);
-
-  //       setLoading(false);
-  //     } catch (error) {
-  //       setError(error);
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const loader = document.getElementById("product_loader"); // Assuming you have an element with the id 'loader'
-  //     // console.log("loader", loader);
-  //     if (loader) {
-  //       const loaderTop = loader.getBoundingClientRect().top;
-  //       // console.log("loaderTop", loaderTop, "---", window.innerHeight);
-  //       if (loaderTop - window.innerHeight <= 0) {
-  //         // Loader is in or near the viewport, load more products
-  //         fetchMoreVideos();
-  //       }
-  //     }
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
-  // const fetchMoreVideos = async () => {
-
-  //   try {
-  //     const res = await apiConnector(
-  //       "GET",
-  //       "https://www.googleapis.com/youtube/v3/videos",
-  //       null,
-  //       null,
-  //       {
-  //         part: "snippet,contentDetails,statistics,status,statistics,topicDetails",
-  //         chart: "mostPopular",
-  //         maxResults: 10,
-  //         key: "AIzaSyDElmCWonR6xKu01WNopa-YC2n8AGhQr1E",
-  //         pageToken: nextPageToken, // Use the next page token
-  //       }
-  //     );
-
-  //     // Update the nextPageToken for the next API request
-  //     setNextPageToken(res.data.nextPageToken);
-  //     console.log("res", res);
-
-  //     // Append the new video data to the existing data
-  //     console.log("res.data", ProductData);
-  //     setProductData((prevData) => [...prevData, ...res.data.items]);
-  //   } catch (error) {
-  //     setError(error);
-  //   }
-  // };
   useLayoutEffect(() => {
     // Function to fetch the initial set of products
     const fetchInitialProducts = async () => {
+      setLoading(true);
       try {
+        // new api key='83dde0dc12msh4dcfc34a38f9b97p1d19bejsn58a438d56bf8'
+        let headers = {
+          "X-RapidAPI-Key":
+            "57c2dd9022mshef1259bff51e6f4p14ffb1jsn129a214b30ec",
+          "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
+        };
         const res = await apiConnector(
           "GET",
-          "https://www.googleapis.com/youtube/v3/videos",
+          "https://youtube138.p.rapidapi.com/home/",
           null,
-          null,
-          {
-            part: "snippet,contentDetails,statistics,status,statistics,topicDetails",
-            chart: "mostPopular",
-            maxResults: 10,
-            key: "AIzaSyDElmCWonR6xKu01WNopa-YC2n8AGhQr1E", // Replace with your actual API key
-          }
+          headers,
+          { hl: "en", gl: "IN" }
         );
-
-        setProductData(res.data.items);
-        setNextPageToken(res.data.nextPageToken);
+        console.log("first res ", res);
+        // nextapicall(res.data.cursorNext);
+        setProductData(res.data);
         setLoading(false);
       } catch (error) {
         setError(error);
@@ -135,114 +48,29 @@ const RightSide = () => {
     // Fetch the initial set of products
     fetchInitialProducts();
   }, []);
-
-  // useEffect(() => {
-  //   // console.log("nextPageToken----", nextPageToken);
-  //   // const handleScroll = () => {
-  //   //   const loader = document.getElementById("product_loader"); // Assuming you have an element with the id 'product_loader'
-  //   //   // console.log("loader", loader);
-  //   //   if (loader) {
-  //   //     const loaderTop = loader.getBoundingClientRect().top;
-  //   //     if (loaderTop - window.innerHeight <= 0) {
-  //   //       // console.log("nextPageToken", nextPageToken);
-  //   //       // Loader is in or near the viewport, load more products
-  //   //       fetchMoreVideos();
-  //   //     }
-  //   //   }
-  //   // };
-  //   // let myDiv = document.getElementById("video_section");
-  //   // console.log("myDiv", myDiv);
-  //   // myDiv?.addEventListener("scroll", handleScroll);
-  //   if (parentDivRef.current) {
-  //     const scrollPosition = parentDivRef.current.scrollTop;
-  //     console.log('Parent Div Scroll Position:', scrollPosition);
-  //   }
-  //   return () => {
-  //     myDiv.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
-
-  // const clickhandler = () => {
-  //   console.log("nextPageToken", nextPageToken);
-  //   fetchMoreVideos(nextPageToken);
-  // };
-  const getId = (id) => {
-    const videoUrl = `https://www.youtube.com/watch?v=${id}`;
-    seturl(id);
-    console.log("id", id, "videoUrl", videoUrl);
-
-    // Open the URL in a new tab or window
-    // window.open(videoUrl, "_blank");
-  };
-  const handleScroll = () => {
-    if (parentDivRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = parentDivRef.current;
-
-      // Check if the user has scrolled to the bottom of the parent div
-      if (scrollTop + clientHeight >= scrollHeight && !isLoading) {
-        // Load more content
-        setIsLoading(true);
-        setTimeout(() => {
-          // Simulating an API call to load more data
-          setIsLoading(false);
-          setPage(page + 1);
-          fetchMoreVideos();
-        }, 1000);
-      }
-    }
-  };
-  useEffect(() => {
-    // parentDivRef.current.addEventListener("scroll", handleScroll);
-    // return () => {
-    //   parentDivRef.current.removeEventListener("scroll", handleScroll);
-    // };
-  }, [page, isLoading]);
-  const fetchMoreVideos = async () => {
-    let pagetoken = nextPageToken;
-    console.log("data", pagetoken);
-    if (pagetoken === null) {
-      return; // No more data to fetch
-    }
-
+  const nextapicall = async (nexttok) => {
+    // console.log("nexttok>>>>..", nexttok);
+    // console.log("type of", typeof nexttok);
     try {
+      // new api key='83dde0dc12msh4dcfc34a38f9b97p1d19bejsn58a438d56bf8'
+      let headers = {
+        "X-RapidAPI-Key": "e8d5b6025dmsh9905c32f2c6d6dbp160642jsne9f34f6c1bdc",
+        "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
+      };
       const res = await apiConnector(
         "GET",
-        "https://www.googleapis.com/youtube/v3/videos",
+        "https://youtube138.p.rapidapi.com/home/?hl=en&gl=IN",
         null,
-        null,
-        {
-          part: "snippet,contentDetails,statistics,status,statistics,topicDetails",
-          chart: "mostPopular",
-          maxResults: 3,
-          key: "AIzaSyDElmCWonR6xKu01WNopa-YC2n8AGhQr1E",
-          pageToken: pagetoken,
-        }
+        headers,
+        { cursor: nexttok }
       );
-
-      // Update the nextPageToken for the next API request
-      setNextPageToken(res.data.nextPageToken);
-
-      // Append the new video data to the existing data
-      console.log("res.data===========", res.data);
-      setProductData((prevData) => [...prevData, ...res.data.items]);
+      console.log("after token res ", res);
+      setProductData(res.data.items);
+      setLoading(false);
     } catch (error) {
       setError(error);
+      setLoading(false);
     }
-  };
-  const pushVideo = (id) => {
-    // router.navigate("");
-    // navigate(`/${id}`);
-    // navigate({
-    //   pathname: "watch",
-    //   search: createSearchParams({
-    //     v: id,
-    //   }).toString(),
-    // });
-    navigate({
-      pathname: "/watch",
-      search: `?v=${id}`,
-    });
-    // console.log("id", id);
   };
 
   if (loading) {
@@ -256,8 +84,8 @@ const RightSide = () => {
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
         {ProductData &&
-          ProductData.map((data, i) => (
-            <HomePageVideoCard data={data} key={i} />
+          ProductData.contents.map((data, i) => (
+            <HomePageVideoCard data={data.video} key={i} />
           ))}
       </div>
       <div
