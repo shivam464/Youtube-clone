@@ -23,7 +23,7 @@ const RightSide = () => {
         // new api key='83dde0dc12msh4dcfc34a38f9b97p1d19bejsn58a438d56bf8'
         let headers = {
           "X-RapidAPI-Key":
-            "57c2dd9022mshef1259bff51e6f4p14ffb1jsn129a214b30ec",
+            "83dde0dc12msh4dcfc34a38f9b97p1d19bejsn58a438d56bf8",
           "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
         };
         const res = await apiConnector(

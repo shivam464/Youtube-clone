@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { RxHamburgerMenu } from "react-icons/Rx";
 import { RiLiveLine } from "react-icons/Ri";
@@ -6,40 +6,74 @@ import { CiBellOn, CiSearch } from "react-icons/Ci";
 import { MdKeyboardVoice, MdLiveTv, MdOutlineExplore } from "react-icons/Md";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { SearchIcon } from "../../components/AllIcons";
+import { apiConnector } from "../../services/apiConnector";
 
+const Category_list = [
+  {
+    label: "All",
+    Category: "all",
+  },
+  {
+    label: "Live",
+    Category: "Live",
+  },
+  {
+    label: "News",
+    Category: "News",
+  },
+  {
+    label: "Javascript",
+    Category: "Javascript",
+  },
+  {
+    label: "Courts",
+    Category: "Courts",
+  },
+  {
+    label: "Website",
+    Category: "Website",
+  },
+  {
+    label: "Moon",
+    Category: "Moon",
+  },
+];
 const Header = () => {
   // const navigate = useNavigate();
   const [SearchInput, setSearchInput] = useState("");
-  const Category_list = [
-    {
-      label: "All",
-      Category: "all",
-    },
-    {
-      label: "Live",
-      Category: "Live",
-    },
-    {
-      label: "News",
-      Category: "News",
-    },
-    {
-      label: "Javascript",
-      Category: "Javascript",
-    },
-    {
-      label: "Courts",
-      Category: "Courts",
-    },
-    {
-      label: "Website",
-      Category: "Website",
-    },
-    {
-      label: "Moon",
-      Category: "Moon",
-    },
-  ];
+  const [autoComplete, setautoComplete] = useState([]);
+
+  useEffect(() => {
+    let searchINPUT = setTimeout(() => {
+      if (SearchInput) {
+        FetchAutoComplete();
+      }
+    }, 900);
+
+    return () => clearTimeout(searchINPUT);
+  }, [SearchInput]);
+  const FetchAutoComplete = async () => {
+    try {
+      let headers = {
+        "X-RapidAPI-Key": "57c2dd9022mshef1259bff51e6f4p14ffb1jsn129a214b30ec",
+        "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
+      };
+      const res = await apiConnector(
+        "GET",
+        "https://youtube138.p.rapidapi.com/auto-complete/",
+        null,
+        headers,
+        { q: SearchInput, hl: "en", gl: "IN" }
+      );
+      if (res) {
+        // console.log("res", res);
+        setautoComplete(res.data.results);
+      }
+    } catch (error) {
+      console.log("error: " + error);
+    }
+  };
   const SearchButtonHandler = () => {
     console.log("SearchInput", SearchInput);
     // navigate({
@@ -62,20 +96,49 @@ const Header = () => {
             </a>
           </div>
           <div className="w-[40%] md:flex justify-between items-center hidden ">
-            <div className="flex items-center  border-solid border-2 rounded-full overflow-hidden w-[95%]">
-              <input
-                onChange={(e) => setSearchInput(e.target.value)}
-                value={SearchInput}
-                type="text"
-                className="bg-transparent ml-2 flex-1  placeholder-gray-400 focus:outline-none px-4 py-2 w-[90%] border-r border-gray-300"
-                placeholder="Search"
-              />
-              <div
-                className="cursor-pointer flex items-center justify-center bg-[#f8f8f8] text-center h-[42px] w-[12%]"
-                onClick={() => SearchButtonHandler()}
-              >
-                <CiSearch className="text-2xl inline-block" />
+            <div className="relative w-[95%]">
+              <div className="flex items-center  border-solid border-2 rounded-full  w-full overflow-hidden">
+                <div className="w-full ">
+                  <input
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    value={SearchInput}
+                    type="text"
+                    className="bg-transparent ml-2 flex-1  placeholder-gray-400 focus:outline-none px-4 py-2  border-r border-gray-300 w-full"
+                    placeholder="Search"
+                  />
+                </div>
+
+                <div
+                  className="cursor-pointer flex items-center justify-center bg-[#f8f8f8] text-center h-[42px] w-[12%] border-l-[1.6px] border-gray-200 border-solid "
+                  onClick={() => SearchButtonHandler()}
+                >
+                  <CiSearch className="text-2xl inline-block" />
+                </div>
               </div>
+              {autoComplete?.length != 0 && SearchInput ? (
+                <div className="w-full h-auto left-0 right-0 border-solid absolute top-[45px]">
+                  <div>
+                    <ul className="text-[1.1rem] text-[#222] bg-[#fff] py-[16px]  rounded-lg border border-solid border-gray-300  shadow-md cursor-default">
+                      {autoComplete &&
+                        autoComplete.map((label, index) => {
+                          return (
+                            <li
+                              key={index}
+                              className="px-[15px] py-[2px] suggestion_list"
+                            >
+                              <div className="flex items-center w-full justify-start">
+                                <div className="me-4">
+                                  <SearchIcon width={"18px"} height={"18px"} />
+                                </div>
+                                <div>{label}</div>
+                              </div>
+                            </li>
+                          );
+                        })}
+                    </ul>
+                  </div>
+                </div>
+              ) : null}
             </div>
             <div className="rounded-full bg-slate-100 ml-4 p-2 cursor-pointer">
               <MdKeyboardVoice className="text-2xl" />

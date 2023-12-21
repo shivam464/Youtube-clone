@@ -21,3 +21,6 @@
   text-overflow: ellipsis;
   white-space: normal; /* Important for line-clamp to work */
 }
+.suggestion_list:hover {
+  background-color: #ebebeb;
+}
