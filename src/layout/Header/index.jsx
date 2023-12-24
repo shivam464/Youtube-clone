@@ -49,29 +49,57 @@ const Header = () => {
       if (SearchInput) {
         FetchAutoComplete();
       }
-    }, 900);
+    }, 200);
 
     return () => clearTimeout(searchINPUT);
   }, [SearchInput]);
+
   const FetchAutoComplete = async () => {
     try {
-      let headers = {
-        "X-RapidAPI-Key": "57c2dd9022mshef1259bff51e6f4p14ffb1jsn129a214b30ec",
-        "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
-      };
       const res = await apiConnector(
         "GET",
-        "https://youtube138.p.rapidapi.com/auto-complete/",
+        "https://clients1.google.com/complete/search",
         null,
-        headers,
-        { q: SearchInput, hl: "en", gl: "IN" }
+        null,
+        {
+          client: "youtube",
+          gs_ri: "youtube",
+          ds: "yt",
+          q: SearchInput,
+        }
       );
-      if (res) {
-        // console.log("res", res);
-        setautoComplete(res.data.results);
+      // const res = await fetch(
+      //   `https://clients1.google.com/complete/search?client=youtube&gs_ri=youtube&ds=yt&q=${SearchInput}`
+      // );
+      // console.log("res", res);
+      const str = res.data;
+
+      // Parse JSON safely
+      let arr;
+      try {
+        arr = JSON.parse(
+          str.substring(str.indexOf("["), str.indexOf("])") + 1)
+        );
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+        return []; // Return an empty array in case of parsing error
       }
+
+      // Use array indexing directly
+      let suggestionsTuple = [];
+      if (Array.isArray(arr) && Array.isArray(arr[1])) {
+        suggestionsTuple = arr[1];
+      }
+
+      const suggestions = suggestionsTuple
+        .flatMap((suggestion) => suggestion)
+        .filter((suggestion) => typeof suggestion === "string");
+      console.log("suggestions", suggestions);
+      setautoComplete(suggestions);
+      // return suggestions;
     } catch (error) {
-      console.log("error: " + error);
+      console.error("Error fetching suggestions:", error);
+      return []; // Return an empty array in case of fetch error
     }
   };
   const SearchButtonHandler = () => {
